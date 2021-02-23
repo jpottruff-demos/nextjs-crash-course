@@ -1,16 +1,28 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import ArticleList from '../components/ArticleList';
 
-export default function Home() {
+export default function Home({ articles }) {
   return (
     <div>
-      
       {/* Head import above allows for this */}
       <Head>
         <title>WebDev Junk</title>
-        <meta name='keywords' content='some descriptive stuff, and, things' />
+        <meta name="keywords" content="some descriptive stuff, and, things" />
       </Head>
 
-      <h1>Welcome to NextJS Crash Crouse</h1>
+      <ArticleList articles={articles} />
     </div>
-  )
+  );
 }
+
+export const getStaticProps = async () => {
+  const URL = 'https://jsonplaceholder.typicode.com/posts?_limit=6';
+  const res = await fetch(URL);
+  const articles = await res.json();
+
+  return {
+    props: {
+      articles,
+    },
+  };
+};
